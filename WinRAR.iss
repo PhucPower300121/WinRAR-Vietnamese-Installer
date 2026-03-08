@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 ; Non-commercial use only
 
-#define MyAppName "Winrar 7.20 vi"
+#define MyAppName "WinRAR 7.20 vn"
 #define MyAppVersion "7.20"
 #define MyAppPublisher "PhucPower."
 #define MyAppURL "https://github.com/PhucPower300121"
@@ -22,7 +22,7 @@ DefaultDirName=C:\Program Files\WinRAR\
 DisableDirPage=yes
 DefaultGroupName=WinRAR
 AllowNoIcons=yes
-LicenseFile=C:\Users\Phuc\Downloads\License.txt
+LicenseFile=License.txt
 ; Uncomment the following line to run in non administrative install mode (install for current user only).
 ;PrivilegesRequired=lowest
 OutputDir=C:\Users\Phuc\Documents\sandbox\WinRAR
@@ -58,7 +58,7 @@ end;
 
 [Run]
 ; 1. Chạy trình cài đặt WinRAR gốc ở chế độ ẩn (silent)
-Filename: "{tmp}\wrar720.exe"; Parameters: "/s"; StatusMsg: "Đang cài đặt WinRAR..."; Flags: waituntilterminated
+Filename: "{tmp}\wrar720.exe"; Parameters: "/s"; StatusMsg: "Installing WinRAR..."; Flags: waituntilterminated
 ; 4. Copy đè đống file .lng từ thư mục tạm vào thư mục cài đặt của WinRAR (thường là C:\Program Files\WinRAR)
-Filename: "cmd.exe"; Parameters: "/c copy /y ""{tmp}\*.lng"" ""{app}\"""; StatusMsg: "Đang nạp ngôn ngữ tiếng Việt..."
+Filename: "cmd.exe"; Parameters: "/c copy /y ""{tmp}\*.lng"" ""{app}\"""; StatusMsg: "Configuring Vietnamese..."
 Filename: "{app}\WinRAR.exe"; Description: "{cm:LaunchProgram,WinRAR}"; Flags: nowait postinstall skipifsilent
