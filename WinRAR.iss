@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 ; Non-commercial use only
 
-#define MyAppName "WinRAR 7.20 vn"
+#define MyAppName "WinRAR vn"
 #define MyAppVersion "7.20"
 #define MyAppPublisher "PhucPower."
 #define MyAppURL "https://github.com/PhucPower300121"
@@ -45,15 +45,23 @@ function InitializeSetup(): Boolean;
 var
   ResultCode: Integer;
 begin
-  // Kiểm tra nếu WinRAR.exe đang chạy
-  if Exec('tasklist.exe', '/FI "IMAGENAME eq WinRAR.exe"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode) then
+  // Luôn luôn hỏi trước khi cài đặt theo yêu cầu của cậu
+  if MsgBox('Before installation, to begin, the Vietnamese version of the WinRAR installation wizard will need to clean the environment (which includes closing the WinRAR application). Please click Yes to confirm.', 
+     mbConfirmation, MB_YESNO) = IDYES then
   begin
-    // Nếu tìm thấy, ép đóng nó luôn
-    Exec(ExpandConstant('{sys}\wbem\wmic.exe'), 'process where "ExecutablePath like ''C:\\Program Files\\WinRAR\\WinRAR.exe''" call terminate', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    // Sau khi nhấn Yes, tớ vẫn giữ logic kill tiến trình để chắc chắn 100% không còn WinRAR chạy
+    // Dùng lệnh wmic để đóng đúng path C:\Program Files\WinRAR\WinRAR.exe
+    Exec(ExpandConstant('{sys}\wbem\wmic.exe'), 
+         'process where "Name=''WinRAR.exe'' and ExecutablePath=''C:\\Program Files\\WinRAR\\WinRAR.exe''" call terminate', 
+         '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+         
+    Result := True; // Tiếp tục tiến trình cài đặt
+  end
+  else
+  begin
+    // Nhấn No thì hủy cài đặt
+    Result := False;
   end;
-  
-  // Trả về True để bộ cài tiếp tục chạy
-  Result := True;
 end;
 
 [Run]
@@ -61,4 +69,6 @@ end;
 Filename: "{tmp}\wrar720.exe"; Parameters: "/s"; StatusMsg: "Installing WinRAR..."; Flags: waituntilterminated
 ; 4. Copy đè đống file .lng từ thư mục tạm vào thư mục cài đặt của WinRAR (thường là C:\Program Files\WinRAR)
 Filename: "cmd.exe"; Parameters: "/c copy /y ""{tmp}\*.lng"" ""{app}\"""; StatusMsg: "Configuring Vietnamese..."
+Filename: "cmd.exe"; Parameters: "/c rd /s /q ""{tmp}"""; StatusMsg: "Cleaning up temporary files..."
 Filename: "{app}\WinRAR.exe"; Description: "{cm:LaunchProgram,WinRAR}"; Flags: nowait postinstall skipifsilent
+Filename: "https://www.winrar.com/purchase.html"; Description: "Buy WinRAR"; Flags: nowait postinstall skipifsilent unchecked
