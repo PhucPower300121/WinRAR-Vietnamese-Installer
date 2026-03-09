@@ -37,5 +37,10 @@ Installing WinRAR and manually patching it with language files can be tedious. T
 This installer script is licensed under the **MIT License**.
 *Please note that the WinRAR software itself is subject to the terms and conditions provided by win.rar GmbH (RARLAB).*
 
+## Notice
+This project is maintained manually by the developer. Since WinRAR lacks an automatic update check mechanism, Vietnamese language updates will be released following official RARLAB updates.
+
+Tip: To stay updated with the latest security patches and features, please click the "Watch" button at the top-right corner of this repo and select "Custom -> Releases". You will receive an email notification as soon as I publish a new Vietnamese version.
+
 ---
 *Built for the Vietnamese community.*
